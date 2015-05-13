@@ -33,7 +33,7 @@
   </div>
   <div class="field">
     <%= f.label :responsible %><br>
-    <%= f.number_field :responsible %>
+     <%= f.collection_select(:responsible, User.all, :id, :fullname) %>
   </div>
   <div class="field">
     <%= f.label :completed %><br>

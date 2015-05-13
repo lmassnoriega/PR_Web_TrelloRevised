@@ -1,5 +1,7 @@
 <h1>Listing tasks</h1>
 
+
+<h3>To Do:</h3>
 <table>
   <thead>
     <tr>
@@ -7,16 +9,18 @@
       <th>Title</th>
       <th>Description</th>
       <th>Duration</th>
-      <th>Begindate</th>
-      <th>Duedate</th>
+      <th>Begin Date</th>
+      <th>Due Date</th>
       <th>Responsible</th>
-      <th>Completed</th>
+      <% if user_signed_in? %>
       <th colspan="3"></th>
+      <% end %>
     </tr>
   </thead>
 
   <tbody>
     <% @tasks.each do |task| %>
+      <% unless task.completed %>
       <tr>
         <td><%= task.user.fullname %></td>
         <td><%= task.title %></td>
@@ -24,16 +28,60 @@
         <td><%= task.duration %></td>
         <td><%= task.begindate %></td>
         <td><%= task.duedate %></td>
-        <td><%= task.user.fullname %></td>
-        <td><%= task.completed %></td>
+        <td><%= task.assigned.fullname %></td>
+        <% if user_signed_in? %>
         <td><%= link_to 'Show', task %></td>
         <td><%= link_to 'Edit', edit_task_path(task) %></td>
         <td><%= link_to 'Destroy', task, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
       </tr>
+    <% end %>
+    <% end %>
+  </tbody>
+</table>
+
+<h3>Already Finished: </h3>
+<table>
+  <thead>
+    <tr>
+      <th>Author</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Duration</th>
+      <th>Begin Date</th>
+      <th>Due Date</th>
+      <th>Responsible</th>
+      <% if user_signed_in? %>
+      <th colspan="3"></th>
+      <% end %>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @tasks.each do |task| %>
+      <% if task.completed %>
+      <tr>
+        <td><%= task.user.fullname %></td>
+        <td><%= task.title %></td>
+        <td><%= task.description %></td>
+        <td><%= task.duration %></td>
+        <td><%= task.begindate %></td>
+        <td><%= task.duedate %></td>
+        <td><%= task.assigned.fullname %></td>
+        <% if user_signed_in? %>
+        <td><%= link_to 'Show', task %></td>
+        <td><%= link_to 'Edit', edit_task_path(task) %></td>
+        <td><%= link_to 'Destroy', task, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
+      </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>
 
 <br>
-
+<% if user_signed_in? %>
 <%= link_to 'New Task', new_task_path %>
+<% else %>
+<%= link_to 'Login', new_user_session_path %>
+<% end %>

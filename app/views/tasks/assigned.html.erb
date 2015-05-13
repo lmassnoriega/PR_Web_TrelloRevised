@@ -1,0 +1,80 @@
+<h1>Listing tasks</h1>
+
+<div class="columns large-12">
+  <h3>Created by me:</h3>
+  <table>
+  <thead>
+    <tr>
+      <th>Author</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Duration</th>
+      <th>Begin Date</th>
+      <th>Due Date</th>
+      <th>Responsible</th>
+      <th>Completed</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @tasks.each do |task| %>
+      <% if task.author == current_user.id %>
+      <tr>
+        <td><%= task.user.fullname %></td>
+        <td><%= task.title %></td>
+        <td><%= task.description %></td>
+        <td><%= task.duration %></td>
+        <td><%= task.begindate %></td>
+        <td><%= task.duedate %></td>
+        <td><%= task.assigned.fullname %></td>
+        <td><%= task.completed %></td>
+        <td><%= link_to 'Show', task %></td>
+        <td><%= link_to 'Edit', edit_task_path(task) %></td>
+        <td><%= link_to 'Destroy', task, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+</div>
+
+<div class="columns large-12">
+  <h3>Assigned Tasks:</h3>
+  <table>
+  <thead>
+    <tr>
+      <th>Author</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Duration</th>
+      <th>Begin Date</th>
+      <th>Due Date</th>
+      <th>Responsible</th>
+      <th>Completed</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @tasks.each do |task| %>
+      <% if task.responsible == current_user.id %>
+      <tr>
+        <td><%= task.user.fullname %></td>
+        <td><%= task.title %></td>
+        <td><%= task.description %></td>
+        <td><%= task.duration %></td>
+        <td><%= task.begindate %></td>
+        <td><%= task.duedate %></td>
+        <td><%= task.assigned.fullname %></td>
+        <td><%= task.completed %></td>
+      </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+</div>
+
+
+<br>
+
+<%= link_to 'New Task', new_task_path %>

@@ -1,10 +1,16 @@
 class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
 
   respond_to :html
+  
+  def assigned
+    @tasks = Task.all.order(completed: :asc).order(duedate: :desc)
+    respond_with(@tasks)
+  end
 
   def index
-    @tasks = Task.all
+    @tasks = Task.all.order(completed: :asc).order(duedate: :desc)
     respond_with(@tasks)
   end
 
