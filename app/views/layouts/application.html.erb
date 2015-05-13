@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title><%= content_for?(:title) ? yield(:title) : "Trello By Lucho" %></title>
+
+    <%= stylesheet_link_tag    "application" %>
+    <%= javascript_include_tag "vendor/modernizr" %>
+    <%= csrf_meta_tags %>
+  </head>
+
+  <body>
+
+<div class="contain-to-grid">
+    <nav class="top-bar" data-topbar>
+      <ul class="title-area">
+        <li class="name">
+          <h1>
+            <%= link_to 'Trello', root_path %>
+          </h1>
+        </li>
+        <li class="toggle-topbar menu-icon">
+          <a href="#"><span>Menu</span></a>
+        </li>
+      </ul>
+
+      <section class="top-bar-section">
+        <ul class="left">
+          <li class="divider">
+
+          </li>
+          <% if user_signed_in? %>
+          <li>
+            <%= link_to 'My Tasks', tasks_path %>
+          </li>
+          <% end %>
+        </ul>
+
+        <ul class="right">
+          <% if user_signed_in? %>
+          <li class="avatar">
+            <% if current_user.profile.file? %>
+            <%= image_tag current_user.profile.url(:mini), class: "round" %>
+            <% end %>
+          </li>
+          <li>
+            <%= link_to current_user.fullname, edit_user_registration_path %>
+          </li>
+          <li>
+            <%= link_to 'Sign Out', destroy_user_session_path, method: :delete %>
+          </li>
+          <% else %>
+          <li class="active">
+            <%= link_to 'Sign Up', new_user_registration_path %>
+          </li>
+          <li>
+            <%= link_to 'Sign In', new_user_session_path %>
+          </li>
+          <% end %>
+        </ul>
+      </section>
+    </nav>
+  </div>
+  <br>
+  <div class="row">
+    <div class="columns large-12">
+
+      <% flash.each do |type, message| %>
+      <div data-alert class="alert-box radius <%= flass_class type %>">
+        <%= message %>
+        <a href="#" class="close">&times;</a>
+      </div>
+      <% end %>
+
+      <%= yield %>
+    </div>
+  </div>
+
+    <%= javascript_include_tag "application" %>
+  </body>
+</html>
